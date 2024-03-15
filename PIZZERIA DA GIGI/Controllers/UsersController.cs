@@ -18,9 +18,52 @@ namespace PIZZERIA_DA_GIGI.Controllers
         // GET: Users/Index
         public ActionResult Index()
         {
-            var users = db.Users.ToList();
-            return View(users);
+            // Recupera gli ordini evasi
+            var ordiniEvasi = db.Ordines.Where(o => o.Evaso == true).ToList();
+
+            // Calcola la somma dei costi totali degli ordini evasi
+            decimal costoTotaleOrdiniEvasi = ordiniEvasi.Sum(o => o.CostoTotale);
+
+            // Passa la lista degli ordini evasi e il costo totale alla vista
+            ViewBag.CostoTotaleOrdiniEvasi = costoTotaleOrdiniEvasi;
+            return View("Index", ordiniEvasi);
         }
+        public ActionResult ordini()
+        {
+            var Ordines = db.Ordines.ToList();
+            return View(Ordines);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SetEvaso(int ordineId)
+        {
+            // Recupera l'ordine dal database
+            var ordine = db.Ordines.Find(ordineId);
+
+            if (ordine != null)
+            {
+                // Imposta lo stato "Evaso" su true
+                ordine.Evaso = true;
+
+                // Salva le modifiche nel database
+                db.SaveChanges();
+            }
+            else
+            {
+                // Gestisci il caso in cui l'ordine non sia trovato nel database
+                // Ad esempio, restituisci una vista con un messaggio di errore
+                return HttpNotFound();
+            }
+
+            // Reindirizza alla vista degli ordini dopo l'aggiornamento
+            return RedirectToAction("index");
+        }
+
+
+
+
+
+
 
         // GET: Users/CreatePizza
         public ActionResult CreatePizza()

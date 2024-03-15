@@ -12,7 +12,7 @@
 
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
         <div class="container">
-            @Html.ActionLink("Nome dell'applicazione", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            @Html.ActionLink("PIZZERIA DA GIGI", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Attiva/Disattiva spostamento" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -21,11 +21,17 @@
                 <ul class="navbar-nav flex-grow-1">
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, new { @class = "nav-link" })</li>
+                    @{
+                        var isAuthenticated = HttpContext.Current.User.Identity.IsAuthenticated;
+                        var isAdmin = User.IsInRole("admin");
+                    }
+                    @if (isAuthenticated && isAdmin)
+                    {
+                        <li>@Html.ActionLink("AGGIUNGIal menu", "CreatePizza", "Users", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("menu", "Delete", "Users", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Tutti gli ordini", "ordini", "Users", new { area = "" }, new { @class = "nav-link" })</li>
+                    }
                 </ul>
-                @{
-                    var isAuthenticated = HttpContext.Current.User.Identity.IsAuthenticated;
-                }
-
                 @if (isAuthenticated)
                 {
                     <!-- Se l'utente è autenticato, mostra il pulsante di logout -->
@@ -33,11 +39,17 @@
                         @Html.AntiForgeryToken()
                         <button type="submit" class="btn btn-primary">LOGOUT</button>
                     </form>
+
+                    <!-- Mostra il pulsante "Carrello" -->
+                    @Html.ActionLink("Carrello", "Finale", "Anteprima", new { area = "" }, new { @class = "btn btn-primary" })
                 }
                 else
                 {
                     <!-- Se l'utente non è autenticato, mostra il pulsante di login -->
                     @Html.ActionLink("LOGIN", "Login", "Login", new { area = "" }, new { @class = "btn btn-primary" })
+
+                    <!-- Se l'utente non è autenticato, mostra il pulsante di registrazione -->
+                    @Html.ActionLink("REGISTRATI", "Register", "Register", new { area = "" }, new { @class = "btn btn-primary" })
                 }
             </div>
         </div>
@@ -49,6 +61,7 @@
             <p>&copy; @DateTime.Now.Year - Applicazione ASP.NET</p>
         </footer>
     </div>
+    <h1>BENVENUTOOO</h1>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

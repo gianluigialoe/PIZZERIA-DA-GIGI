@@ -18,11 +18,22 @@ namespace PIZZERIA_DA_GIGI.Controllers
         public ActionResult Login()
         {
             // Verifica se l'utente è già autenticato e, in tal caso, lo reindirizza alla pagina principale
-            if (User.Identity.IsAuthenticated) return RedirectToAction("Index", "Home");
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("admin"))
+                {
+                    return RedirectToAction("Index", "Users"); // Reindirizza gli utenti admin alla pagina principale dell'admin
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home"); // Reindirizza gli altri utenti alla pagina principale
+                }
+            }
 
             // Restituisce la vista di login
             return View();
         }
+    
 
         // Azione HTTP POST per gestire il tentativo di accesso
         [HttpPost]
@@ -41,7 +52,7 @@ namespace PIZZERIA_DA_GIGI.Controllers
 
             // Se l'utente è autenticato con successo, imposta un cookie di autenticazione e reindirizza alla pagina principale
             FormsAuthentication.SetAuthCookie(loggedUser.UtenteId.ToString(), keepLogged);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Anteprima");
         }
 
         // Azione HTTP POST per gestire il logout

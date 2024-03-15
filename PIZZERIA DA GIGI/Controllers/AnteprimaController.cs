@@ -35,7 +35,7 @@ namespace PIZZERIA_DA_GIGI.Controllers
                     // Aggiungi il dettaglio ordine al database
                     db.DettaglioOrdines.Add(dettaglioOrdine);
                     db.SaveChanges();
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Create");
                 }
                 catch (Exception ex)
                 {
@@ -66,61 +66,97 @@ namespace PIZZERIA_DA_GIGI.Controllers
         //}
 
         // POST: Ordine/Create
-        [HttpGet]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(Ordine ordine)
+
+        public ActionResult Create()
         {
-            if (ModelState.IsValid)
-            {
-                // Calcola il costo totale dalla somma dei prezzi delle pizze moltiplicati per la quantità nei dettagli dell'ordine
-                decimal costoTotale = db.DettaglioOrdines
-                    .Where(d => d.OrdineId == ordine.OrdineId)
-                    .Join(db.Pizzas, dettaglio => dettaglio.PizzaId, pizza => pizza.PizzaId,
-                        (dettaglio, pizza) => dettaglio.Quantita * pizza.Prezzo)
-                    .Sum();
+            // Crea una nuova istanza di Ordine per il form di creazione
+            var nuovoOrdine = new Ordine();
 
-                ordine.CostoTotale = costoTotale;
+            // Inizializza il campo DataOrdine con la data corrente
+            nuovoOrdine.DataOrdine = DateTime.Now;
 
-              
-            }
-
-            return View(ordine);
+            // Restituisci la vista con il nuovo ordine
+            return View(nuovoOrdine);
         }
+        //        [HttpPost]
+        //        [ValidateAntiForgeryToken]
+        //        public ActionResult AggiungiOrdine(Ordine ordine, List<DettaglioOrdine> dettagliOrdine)
+        //        {
+        //            if (ModelState.IsValid)
+        //            {
+        //                int utenteId;
+        //                if (int.TryParse(User.Identity.Name, out utenteId))
+        //                {
+        //                    ordine.UtenteId = utenteId;
 
+        //                    try
+        //                    {
+        //                        // Calcola il costo totale dell'ordine
+        //                        ordine.CostoTotale = dettagliOrdine.Sum(d => d.Pizza.Prezzo * d.Quantita);
 
+        //                        // Aggiungi l'ordine al database
+        //                        db.Ordines.Add(ordine);
+        //                        db.SaveChanges();
+
+        //                        return RedirectToAction("Index");
+        //                    }
+        //                    catch (Exception ex)
+        //                    {
+        //                        // Gestisci l'eccezione qui
+        //                        ModelState.AddModelError(string.Empty, "Si è verificato un errore durante l'aggiunta dell'ordine.");
+        //                        return View(ordine);
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    // Gestisci il caso in cui il valore dell'ID utente non sia valido
+        //                    ModelState.AddModelError(string.Empty, "Impossibile convertire l'ID utente.");
+        //                    return View(ordine);
+        //                }
+        //            }
+
+        //            return View(ordine);
+        //        }
+        //    }
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AggiungiOrdine(Ordine ordine, List<DettaglioOrdine> dettagliOrdine)
+        public ActionResult AggiungiOrdine(Ordine ordine)
         {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    // Imposta l'ID utente prendendolo dal cookie
-                    ordine.UtenteId = Convert.ToInt32(User.Identity.Name);
+            ordine.UtenteId = Convert.ToInt32(User.Identity.Name);
+            ordine.DataOrdine = DateTime.Now;
+            ordine.Evaso = false;
+            ordine.CostoTotale = 0;
 
-                    // Calcola il costo totale dell'ordine
-                    ordine.CostoTotale = dettagliOrdine.Sum(d => d.Pizza.Prezzo * d.Quantita);
-                    // Aggiungi l'ordine al database
-                    db.Ordines.Add(ordine);
-                    db.SaveChanges();
 
-                    return RedirectToAction("Index");
-                }
-                catch (Exception ex)
-                {
-                    // Gestisci l'eccezione qui
-                    // Puoi loggare l'errore, mostrare un messaggio all'utente, ecc.
-                    ModelState.AddModelError(string.Empty, "Si è verificato un errore durante l'aggiunta dell'ordine.");
-                    return View(ordine);
-                }
-            }
+            // Calcola il costo totale dell'ordine
+            ordine.CostoTotale = db.DettaglioOrdines.Where(d => d.UtenteId == ordine.UtenteId && d.OrdineId == null).Sum(d => d.Pizza.Prezzo * d.Quantita);
 
-            return View(ordine);
+
+            // Aggiungi l'ordine al database
+            db.Ordines.Add(ordine);
+            db.SaveChanges();
+
+            return RedirectToAction("finale", "Anteprima");
+
+            // Gestisci l'eccezione qui
+
+
+
+
+
+
         }
 
+        public ActionResult finale()
+        {
+            var ordineList = db.Ordines.ToList();
 
+            // Passa la lista delle pizze alla vista
+            return View(ordineList);
+
+        }
     }
 }
 
@@ -130,4 +166,16 @@ namespace PIZZERIA_DA_GIGI.Controllers
 
 
 
- 
+
+
+
+
+
+
+
+
+
+
+
+
+

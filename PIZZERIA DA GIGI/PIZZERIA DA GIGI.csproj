@@ -164,6 +164,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AnteprimaController.cs" />
+    <Compile Include="Controllers\ChiamteAsincroneController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\OrdiniController.cs" />
@@ -291,9 +292,13 @@
     <Content Include="Views\Anteprima\VisualizzaCarrello.cshtml" />
     <Content Include="Views\Ordini\OrdiniController.cshtml" />
     <Content Include="Views\Anteprima\Create.cshtml" />
+    <Content Include="Views\Anteprima\AggiungiOrdine.cshtml" />
+    <Content Include="Views\Anteprima\finale.cshtml" />
+    <Content Include="Views\Users\ordini.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\ChiamteAsincrone\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\bootstrap.min.js.map" />

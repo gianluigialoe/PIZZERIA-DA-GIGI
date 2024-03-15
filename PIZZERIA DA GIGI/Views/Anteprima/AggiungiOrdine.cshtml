@@ -5,8 +5,7 @@
 }
 
 <h2>Create New Order</h2>
-
-@using (Html.BeginForm("AggiungiOrdine", "Anteprima", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("AggiungiOrdine", "Anteprima", FormMethod.Post, new { @class = "your-form-class" }))
 {
     @Html.AntiForgeryToken()
 

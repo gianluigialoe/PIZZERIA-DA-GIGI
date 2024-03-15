@@ -1,0 +1,31 @@
+﻿@model List<PIZZERIA_DA_GIGI.Models.Ordine>
+
+@{
+    ViewBag.Title = "Elenco Ordini";
+}
+
+<h2>Elenco Ordini</h2>
+
+<table class="table">
+    <tr>
+        <th>Ordine ID</th>
+        <th>Utente ID</th>
+        <th>Data Ordine</th>
+        <th>Evaso</th>
+        <th>Costo Totale</th>
+        <th>Indirizzo Spedizione</th>
+        <th>Note</th>
+    </tr>
+    @foreach (var ordine in Model)
+    {
+        <tr>
+            <td>@ordine.OrdineId</td>
+            <td>@ordine.UtenteId</td>
+            <td>@ordine.DataOrdine</td>
+            <td>@(ordine.Evaso.HasValue ? (ordine.Evaso.Value ? "Sì" : "No") : "-")</td>
+            <td>@ordine.CostoTotale</td>
+            <td>@ordine.IndirizzoSpedizione</td>
+            <td>@(string.IsNullOrEmpty(ordine.Note) ? "-" : ordine.Note)</td>
+        </tr>
+    }
+</table>

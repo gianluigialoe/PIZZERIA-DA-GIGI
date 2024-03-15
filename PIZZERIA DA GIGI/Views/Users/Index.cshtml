@@ -1,21 +1,37 @@
-﻿@model List<PIZZERIA_DA_GIGI.Models.User>
+﻿@model List<PIZZERIA_DA_GIGI.Models.Ordine>
+
+
 
 @{
-    ViewBag.Title = "User List";
+    ViewBag.Title = "Ordini Evasi";
 }
 
-<h2>User List</h2>
+<h2>Elenco Ordini Evasi</h2>
 
-@if (Model != null && Model.Any())
-{
-    <ul>
-        @foreach (var user in Model)
+<p>Costo Totale degli Ordini Evasi: @ViewBag.CostoTotaleOrdiniEvasi</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Ordine ID</th>
+            <th>Utente ID</th>
+            <th>Data Ordine</th>
+            <th>Costo Totale</th>
+            <th>Indirizzo Spedizione</th>
+            <th>Note</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ordine in Model)
         {
-            <li>@user.Nome</li>
+            <tr>
+                <td>@ordine.OrdineId</td>
+                <td>@ordine.UtenteId</td>
+                <td>@ordine.DataOrdine.ToShortDateString()</td>
+                <td>@ordine.CostoTotale</td>
+                <td>@ordine.IndirizzoSpedizione</td>
+                <td>@(string.IsNullOrEmpty(ordine.Note) ? "-" : ordine.Note)</td>
+            </tr>
         }
-    </ul>
-}
-else
-{
-    <p>No users found.</p>
-}
+    </tbody>
+</table>
