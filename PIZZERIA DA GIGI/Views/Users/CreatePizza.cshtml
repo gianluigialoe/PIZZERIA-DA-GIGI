@@ -1,0 +1,44 @@
+﻿@model PIZZERIA_DA_GIGI.Models.Pizza
+
+@{
+    ViewBag.Title = "Create Pizza";
+}
+
+<h2>Create Pizza</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+
+        @Html.LabelFor(model => model.Nome)
+        @Html.TextBoxFor(model => model.Nome, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Foto)
+        @Html.TextBoxFor(model => model.Foto, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Prezzo)
+        @Html.TextBoxFor(model => model.Prezzo, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Prezzo, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TempoConsegna)
+        @Html.TextBoxFor(model => model.TempoConsegna, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.TempoConsegna, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Ingredienti)
+        @Html.TextAreaFor(model => model.Ingredienti, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Ingredienti, "", new { @class = "text-danger" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Pizza</button>
+}

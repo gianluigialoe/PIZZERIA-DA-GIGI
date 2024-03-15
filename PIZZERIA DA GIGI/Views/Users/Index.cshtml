@@ -1,0 +1,21 @@
+﻿@model List<PIZZERIA_DA_GIGI.Models.User>
+
+@{
+    ViewBag.Title = "User List";
+}
+
+<h2>User List</h2>
+
+@if (Model != null && Model.Any())
+{
+    <ul>
+        @foreach (var user in Model)
+        {
+            <li>@user.Nome</li>
+        }
+    </ul>
+}
+else
+{
+    <p>No users found.</p>
+}

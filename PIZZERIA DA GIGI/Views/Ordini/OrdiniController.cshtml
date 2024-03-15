@@ -1,0 +1,44 @@
+﻿@model PIZZERIA_DA_GIGI.Models.Ordine
+
+@{
+    ViewBag.Title = "Dettagli Ordine";
+}
+
+<h2>Dettagli Ordine</h2>
+
+<div>
+    <h4>Informazioni Ordine</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Ordine ID</dt>
+        <dd>@Model.OrdineId</dd>
+        <dt>Utente ID</dt>
+        <dd>@Model.UtenteId</dd>
+        <dt>Data Ordine</dt>
+        <dd>@Model.DataOrdine.ToShortDateString()</dd>
+        <dt>Stato Evaso</dt>
+        <dd>@(Model.Evaso.HasValue && Model.Evaso.Value ? "Evaso" : "Non Evaso")</dd>
+        <dt>Costo Totale</dt>
+        <dd>@Model.CostoTotale.ToString("C")</dd>
+        <dt>Indirizzo Spedizione</dt>
+        <dd>@Model.IndirizzoSpedizione</dd>
+        <dt>Note</dt>
+        <dd>@Model.Note</dd>
+    </dl>
+    <hr />
+</div>
+
+<h2>Aggiungi Dettaglio Ordine</h2>
+
+<form method="post" action="@Url.Action("AggiungiDettaglioOrdine", "Ordini")">
+    <input type="hidden" id="ordineId" name="ordineId" value="@Model.OrdineId" />
+    <div class="form-group">
+        <label for="pizzaId">Pizza ID:</label>
+        <input type="number" id="pizzaId" name="pizzaId" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="quantita">Quantità:</label>
+        <input type="number" id="quantita" name="quantita" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Aggiungi Dettaglio Ordine</button>
+</form>

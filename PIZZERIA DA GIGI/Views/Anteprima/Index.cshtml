@@ -1,0 +1,39 @@
+﻿@model List<PIZZERIA_DA_GIGI.Models.Pizza>
+@{
+    ViewBag.Title = "IL NOSTRO MENU'";
+}
+
+<h2>Index</h2>
+
+<div class="container">
+    <h1>Elenco Pizze</h1>
+    <div class="row">
+        @foreach (var pizza in Model)
+        {
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100">
+                    <img class="card-img-top" src="@pizza.Foto" alt="@pizza.Nome">
+                    <div class="card-body">
+                        <h4 class="card-title">@pizza.Nome</h4>
+                        <h5>Prezzo: @pizza.Prezzo</h5>
+                        <h5>Tempo di Consegna: @pizza.TempoConsegna</h5>
+                        <p class="card-text">@pizza.Ingredienti</p>
+                        <form method="post" action="@Url.Action("ADD", "Anteprima")">
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                <label for="quantita">Quantità:</label>
+                                <input type="number" id="quantita" name="quantita" class="form-control" value="1" min="1">
+                                <input type="hidden" name="PizzaId" value="@pizza.PizzaId">
+
+                            </div>
+                            <button type="submit" class="btn btn-primary">Aggiungi al Carrello</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <form method="post" action="@Url.Action("Index", "Anteprima")">
+        <button type="submit" class="btn btn-primary">Torna al menu</button>
+    </form>
+</div>

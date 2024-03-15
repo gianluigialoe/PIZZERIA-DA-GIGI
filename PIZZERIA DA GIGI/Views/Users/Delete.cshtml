@@ -1,0 +1,40 @@
+﻿@model List<PIZZERIA_DA_GIGI.Models.Pizza>
+@{
+    ViewBag.Title = "Elimina Pizza";
+}
+
+<h2>Elimina Pizza</h2>
+
+<table class="table">
+    <tr>
+        <th>Nome</th>
+       
+        <th>Prezzo</th>
+        <th>Tempo Consegna</th>
+        <th>Ingredienti</th>
+        <th>Elimina</th>
+    </tr>
+
+    @foreach (var pizza in Model)
+    {
+        <tr>
+            <td>@pizza.Nome</td>
+        
+            <td>@pizza.Prezzo</td>
+            <td>@pizza.TempoConsegna</td>
+            <td>@pizza.Ingredienti</td>
+            <td>
+                <!-- Form per confermare l'eliminazione -->
+                @using (Html.BeginForm("DeleteConfirmed", "Users", new { pizzaIdToDelete = pizza.PizzaId }, FormMethod.Post))
+
+                {
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">Elimina</button>
+                }
+            </td>
+        </tr>
+    }
+</table>
+
+<!-- Link per annullare l'operazione e tornare all'Index -->
+@Html.ActionLink("Annulla", "Index", null, new { @class = "btn btn-default" })
